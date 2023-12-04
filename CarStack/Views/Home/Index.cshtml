@@ -1,7 +1,17 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CarStack.Areas.Identity.Data
+
+@inject UserManager<CarStackUser> UserManager
+
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <h1 class="display-4">Welcome, @UserManager.GetUserName(User)</h1>
+    } else {
         <h1 class="display-4">Hello</h1>
+    }
 </div>
