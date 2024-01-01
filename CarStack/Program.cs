@@ -27,6 +27,9 @@ public class Program
         builder.Services.AddMemoryCache();
         builder.Services.AddSession();
 
+        // Register repositories
+        builder.Services.AddScoped<ICarRepository, CarRepository>();
+        builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddScoped<IUserService, UserService>();
