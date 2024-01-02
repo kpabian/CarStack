@@ -46,18 +46,34 @@ public sealed class CarController(
     [HttpGet("/Car/Update/{id:int}")]
     public async Task<IActionResult> Update(int id)
     {
-        return View();
+        var car = await carService.GetById(id);
+        var manufacturers = await manufacturerService.GetAll();
+        if (car is null || manufacturers is null) return NotFound();
+        return View(new CarViewModel { Car = car, Manufacturers = manufacturers });
     }
 
     [HttpPost]
     public async Task<IActionResult> Update(CarViewModel model)
     {
-        return View();
+        try
+        {
+            var car = model.Car;
+            car.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+            await carService.Update(car);
+            return RedirectToAction("Index");
+        }
+        catch (Exception)
+        {
+            var manufacturers = await manufacturerService.GetAll();
+            if (manufacturers == null) return NotFound();
+            return View(new CarViewModel { Car = model.Car, Manufacturers = manufacturers });
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
     {
+        await carService.Delete(id);
         return RedirectToAction("Index");
     }
 
