@@ -20,13 +20,27 @@ public sealed class CarController(
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        return View();
+        var manufacturers = await manufacturerService.GetAll();
+        if (manufacturers is null) return NotFound();
+        return View(new CarViewModel { Manufacturers = manufacturers });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(CarViewModel model)
     {
-        return View();
+        try
+        {
+            var newCar = model.Car;
+            newCar.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+            await carService.Create(newCar);
+            return RedirectToAction("Index");
+        }
+        catch (Exception)
+        {
+            var manufacturers = await manufacturerService.GetAll();
+            if (manufacturers == null) return NotFound();
+            return View(new CarViewModel { Car = model.Car, Manufacturers = manufacturers });
+        }
     }
 
     [HttpGet("/Car/Update/{id:int}")]

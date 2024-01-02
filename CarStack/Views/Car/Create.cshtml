@@ -1,3 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CarStack.Areas.Identity.Data
+
+@inject UserManager<CarStackUser> UserManager
+
+@model CarViewModel;
 @{
     ViewData["Title"] = "Dodaj samochód";
 }
+
+<h1>Dodaj nowy samochód</h1>
+<form asp-controller="Car" asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Car.Model"></label>
+        <input class="form-control" asp-for="Car.Model" />
+        <span class="text-danger" asp-validation-for="Car.Model"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.ManufacturerId"></label>
+        <select class="form-control" asp-for="Car.ManufacturerId">
+            @foreach (var m in Model.Manufacturers)
+            {
+                <option value="@m.Id">@m.Name</option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.Capacity"></label>
+        <input class="form-control" asp-for="Car.Capacity" />
+        <span class="text-danger" asp-validation-for="Car.Capacity"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.Power"></label>
+        <input class="form-control" asp-for="Car.Power" />
+        <span class="text-danger" asp-validation-for="Car.Power"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.Motor"></label>
+        <input class="form-control" asp-for="Car.Motor" />
+        <span class="text-danger" asp-validation-for="Car.Motor"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.RegistrationNumber"></label>
+        <input class="form-control" asp-for="Car.RegistrationNumber" />
+        <span class="text-danger" asp-validation-for="Car.RegistrationNumber"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Car.Priority"></label>
+        <select class="form-control" asp-for="Car.Priority" asp-items="@Html.GetEnumSelectList<Priority>()"></select>
+        <span class="text-danger" asp-validation-for="Car.Priority"></span>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Utwórz</button>
+    </div>
+</form>
