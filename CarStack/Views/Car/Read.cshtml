@@ -1,3 +1,20 @@
+﻿@model CarStack.Models.Car
+
 @{
     ViewData["Title"] = "Szczegóły";
 }
+
+<h1>Dane samochodu o numerze rejestracyjnym @Model.RegistrationNumber:</h1>
+<p>Model - @Model.Model</p>
+<p>Pojemność silnika - @Model.Capacity</p>
+<p>Moc silnika - @Model.Power</p>
+<p>Rodzaj silnika - @Model.Motor</p>
+<p>Numery rejestracyjne - @Model.RegistrationNumber</p>
+@if (Model.Manufacturer is not null)
+{
+    <p>Producent - <a asp-controller="Manufacturer" asp-action="Read" asp-route-id=@Model.Manufacturer.Id> @Model.Manufacturer.Name </a></p>
+}
+<p>Priorytet - @Html.DisplayFor(m => m.Priority)</p>
+
+
+<a class="btn btn-outline-success" asp-action="Index">Powrót do listy</a>

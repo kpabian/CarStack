@@ -64,6 +64,14 @@ public sealed class CarController(
     [HttpGet("/Car/Read/{id:int}")]
     public async Task<IActionResult> Read(int id)
     {
-        return View();
+        var car = await carService.GetById(id);
+        if (car is null) return NotFound();
+        if (User.IsInRole("Admin"))
+            return View(car);
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+        if (car.UserId != userId)
+            return Unauthorized();
+        return View(car);
     }
 }
