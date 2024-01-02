@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CarStack.Models.Car>
+
+@{
+    ViewData["Title"] = "Samochody";
+}
+
+<h1>Lista samochodów</h1>
+<a class="btn btn-success" asp-area="" asp-controller="Car" asp-action="Create">Dodaj nowy samochód</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(a => Model.First().Model)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(a => Model.First().Manufacturer)   
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(a => Model.First().RegistrationNumber)
+            </th>
+
+            <th>
+                Akcje
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Model
+                </td>
+                <td>
+                    @item.Manufacturer?.Name
+                </td>
+                <td>
+                    @item.RegistrationNumber
+                </td>
+                <td>
+                    <a class="btn btn-outline-success" asp-action="Update" asp-route-id=@item.Id>Edycja</a>
+                    <a class="btn btn-outline-info" asp-action="Read" asp-route-id=@item.Id>Szczegóły</a>
+                    <form class="d-inline-block" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć ten samochód?');">
+                        <button type="submit" class="btn btn-outline-danger">Usuń</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

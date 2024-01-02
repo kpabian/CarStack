@@ -32,6 +32,9 @@ public class Program
         builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+        // Register services
+        builder.Services.AddScoped<ICarService, CarService>();
+        builder.Services.AddScoped<IManufacturerService, ManufacturerService>();
         builder.Services.AddScoped<IUserService, UserService>();
 
         var app = builder.Build();
