@@ -1,0 +1,53 @@
+﻿@model List<CarStack.Models.Manufacturer>
+@{
+    ViewData["Title"] = "Producenci";
+}
+<h1>Lista producentów</h1>
+<a class="btn btn-success" asp-area="" asp-controller="Manufacturer" asp-action="Create">Dodaj nowego producenta</a>
+@if (Model is not null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(a => a[0].Name)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(a => a[0].City)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(a => a[0].Country)
+                </th>
+
+                <th>
+                    Akcje
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.City
+                    </td>
+                    <td>
+                        @item.Country
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-info" asp-action="Read" asp-route-id=@item.Id>Szczegóły</a>
+                        <a class="btn btn-outline-success" asp-action="Update" asp-route-id=@item.Id>Edycja</a>
+                        <form class="d-inline-block" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego producenta?');">
+                            <button type="submit" class="btn btn-outline-danger">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
