@@ -16,6 +16,19 @@ public sealed class ManufacturerController(
     }
 
     [HttpGet]
+    public IActionResult Create() => View(new Manufacturer());
+
+    [HttpPost]
+    public async Task<IActionResult> Create(Manufacturer manufacturer)
+    {
+        if (!ModelState.IsValid)
+            return View(manufacturer);
+
+        await manufacturerService.Create(manufacturer);
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Read(int id)
     {
         var manufacturer = await manufacturerService.GetById(id);

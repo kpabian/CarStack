@@ -1,0 +1,32 @@
+﻿@model CarStack.Models.Manufacturer;
+
+@{
+    ViewData["Title"] = "Dodaj producenta";
+}
+
+<h1>Dodaj nowego producenta</h1>
+<form asp-controller="Manufacturer" asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="City"></label>
+        <input class="form-control" asp-for="City" />
+        <span class="text-danger" asp-validation-for="City"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PostalCode"></label>
+        <input class="form-control" asp-for="PostalCode" />
+        <span class="text-danger" asp-validation-for="PostalCode"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Country"></label>
+        <input class="form-control" asp-for="Country" />
+        <span class="text-danger" asp-validation-for="Country"></span>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Utwórz</button>
+    </div>
+</form>
