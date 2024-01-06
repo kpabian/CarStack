@@ -14,4 +14,12 @@ public sealed class ManufacturerController(
         var manufacturers = await manufacturerService.GetAll();
         return View(manufacturers);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Read(int id)
+    {
+        var manufacturer = await manufacturerService.GetById(id);
+        if (manufacturer is null) return NotFound();
+        return View(manufacturer);
+    }
 }

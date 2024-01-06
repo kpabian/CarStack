@@ -1,0 +1,12 @@
+﻿@model CarStack.Models.Manufacturer
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h1>Dane producenta: @Model.Name to:</h1>
+<p>Miasto - @Model.City</p>
+<p>Kod pocztowy - @Model.PostalCode</p>
+<p>Kraj - @Model.Country</p>
+
+<a class="btn btn-primary" asp-area="" asp-controller="Manufacturer" asp-action="Index">Powrót do producentów</a>
