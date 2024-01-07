@@ -1,0 +1,33 @@
+﻿@model CarStack.Models.Manufacturer
+
+@{
+    ViewData["Title"] = "Edydtuj producenta";
+}
+
+<h1>Edytuj producenta</h1>
+<form asp-controller="Manufacturer" asp-action="Update" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name">Nazwa</label>
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="City">Miasto</label>
+        <input class="form-control" asp-for="City" />
+        <span class="text-danger" asp-validation-for="City"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PostalCode">Kod pocztowy</label>
+        <input class="form-control" asp-for="PostalCode" />
+        <span class="text-danger" asp-validation-for="PostalCode"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Country">Państwo</label>
+        <input class="form-control" asp-for="Country" />
+        <span class="text-danger" asp-validation-for="Country"></span>
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-primary" type="submit">Zapisz</button>
+    </div>
+</form>
