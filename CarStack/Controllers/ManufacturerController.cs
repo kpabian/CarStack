@@ -46,6 +46,13 @@ public sealed class ManufacturerController(
         return RedirectToAction("Index");
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await manufacturerService.Delete(id);
+        return RedirectToAction("Index");
+    }
+
     [HttpGet]
     public async Task<IActionResult> Read(int id)
     {
