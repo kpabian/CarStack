@@ -59,6 +59,25 @@ public class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}"
         );
+
+        List<CarStackUser> users = [
+            new CarStackUser { UserName = "jan@user.com", Email = "jan@user.com", FirstName = "Jan", LastName = "U¿ytkowniczy", LicenseNumber = "0" },
+            new CarStackUser { UserName = "andrzej@admin.com", Email = "andrzej@admin.com", FirstName = "Andrzej", LastName = "Admin", LicenseNumber = "0" },
+        ];
+
+        using var scope = app.Services.CreateScope();
+
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<CarStackUser>>();
+        string password = "Test123!";
+
+        foreach (var user in users)
+        {
+            if (await userManager.FindByEmailAsync(user.Email!) != null) continue;
+            await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user!, "User");
+            if (user.LastName == "Admin") await userManager.AddToRoleAsync(user, "Admin");
+        }
+
         app.Run();
     }
 }
