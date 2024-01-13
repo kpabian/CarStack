@@ -1,9 +1,11 @@
 ﻿using CarStack.Models;
 using CarStack.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarStack.Controllers;
 
+[Authorize(Roles = "User,Admin")]
 public sealed class ManufacturerController(
     IManufacturerService manufacturerService
 ) : Controller
@@ -16,9 +18,11 @@ public sealed class ManufacturerController(
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create() => View(new Manufacturer());
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create(Manufacturer manufacturer)
     {
         if (!ModelState.IsValid)
@@ -29,6 +33,7 @@ public sealed class ManufacturerController(
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id)
     {
         var manufacturer = await manufacturerService.GetById(id);
@@ -37,6 +42,7 @@ public sealed class ManufacturerController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(Manufacturer manufacturer)
     {
         if (!ModelState.IsValid)
@@ -47,6 +53,7 @@ public sealed class ManufacturerController(
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await manufacturerService.Delete(id);

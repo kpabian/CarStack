@@ -1,10 +1,12 @@
 ﻿using CarStack.Models;
 using CarStack.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CarStack.Controllers;
 
+[Authorize(Roles = "Admin,User")]
 public sealed class CarController(
     ICarService carService,
     IManufacturerService manufacturerService

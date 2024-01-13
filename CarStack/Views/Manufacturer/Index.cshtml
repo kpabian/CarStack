@@ -3,7 +3,10 @@
     ViewData["Title"] = "Producenci";
 }
 <h1>Lista producentów</h1>
-<a class="btn btn-success" asp-area="" asp-controller="Manufacturer" asp-action="Create">Dodaj nowego producenta</a>
+@if (User.IsInRole("Admin"))
+{
+    <a class="btn btn-success" asp-area="" asp-controller="Manufacturer" asp-action="Create">Dodaj nowego producenta</a>
+}
 @if (Model is not null)
 {
     <table class="table">
@@ -41,10 +44,13 @@
                     </td>
                     <td>
                         <a class="btn btn-outline-info" asp-action="Read" asp-route-id=@item.Id>Szczegóły</a>
-                        <a class="btn btn-outline-success" asp-action="Update" asp-route-id=@item.Id>Edycja</a>
-                        <form class="d-inline-block" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego producenta?');">
-                            <button type="submit" class="btn btn-outline-danger">Usuń</button>
-                        </form>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-outline-success" asp-action="Update" asp-route-id=@item.Id>Edycja</a>
+                            <form class="d-inline-block" asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego producenta?');">
+                                <button type="submit" class="btn btn-outline-danger">Usuń</button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }
