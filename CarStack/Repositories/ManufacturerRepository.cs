@@ -14,6 +14,7 @@ public sealed class ManufacturerRepository(CarDBContext context) : IManufacturer
         var query = _context.Manufacturers.AsQueryable();
         if (manufacturerId != null)
             query = query.Where(x => x.Id == manufacturerId);
+
         return await query.ToListAsync();
     }
 
@@ -26,6 +27,9 @@ public sealed class ManufacturerRepository(CarDBContext context) : IManufacturer
     public async Task Update(Manufacturer manufacturer)
     {
         var existingManufacturer = await _context.Manufacturers.FindAsync(manufacturer.Id);
+        if (existingManufacturer is null)
+            throw new InvalidOperationException($"Producent o ID {manufacturer.Id} nie został znaleziony.");
+        
         _context.Entry(existingManufacturer).CurrentValues.SetValues(manufacturer);
         await _context.SaveChangesAsync();
     }
@@ -33,6 +37,9 @@ public sealed class ManufacturerRepository(CarDBContext context) : IManufacturer
     public async Task Delete(int manufacturerId)
     {
         var manufacturerToDelete = await _context.Manufacturers.FindAsync(manufacturerId);
+        if (manufacturerToDelete is null)
+            throw new InvalidOperationException($"Producent o ID {manufacturerId} nie został znaleziony.");
+
         _context.Manufacturers.Remove(manufacturerToDelete);
         await _context.SaveChangesAsync();
     }
