@@ -45,4 +45,13 @@ public sealed class CarRepository(CarDBContext context) : ICarRepository
         _context.Cars.Remove(carToDelete);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Car>> GetByFilter(Expression<Func<Car, bool>> filter)
+    {
+        var query = _context.Cars
+            .Include(c => c.Manufacturer)
+            .Where(filter)
+            .AsQueryable();
+        return await query.ToListAsync();
+    }
 }

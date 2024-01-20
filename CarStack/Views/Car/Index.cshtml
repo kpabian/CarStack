@@ -1,24 +1,55 @@
-﻿@model IEnumerable<CarStack.Models.Car>
+﻿@model ValueTuple<IEnumerable<CarStack.Models.Car>, IEnumerable<CarStack.Models.Manufacturer>>
 
 @{
     ViewData["Title"] = "Samochody";
 }
 
+<style>
+    #manufacturers_header {
+        position: relative;
+    }
+
+    #manufacturers_filters {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+</style>
+
 <h1>Lista samochodów</h1>
 <a class="btn btn-success" asp-area="" asp-controller="Car" asp-action="Create">Dodaj nowy samochód</a>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(a => Model.First().Model)
+                @Html.DisplayNameFor(a => Model.Item1.First().Model)
+            </th>
+
+            <th id="manufacturers_header">
+                @Html.DisplayNameFor(a => Model.Item1.First().Manufacturer)
+                <div id="manufacturers_filters" class="container-md p-3" style="display:none">
+                    <form asp-action="Index" method="get">
+                        <div class="row row-cols-2">
+                            @foreach (var m in Model.Item2)
+                            {
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="true" id="@m.Id" name="@m.Id">
+                                        <label class="form-check-label" for="@m.Id">
+                                            @m.Name
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <button class="btn btn-primary btn-sm mt-2" type="submit">Filtruj</button>
+                    </form>
+                </div>
             </th>
 
             <th>
-                @Html.DisplayNameFor(a => Model.First().Manufacturer)   
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(a => Model.First().RegistrationNumber)
+                @Html.DisplayNameFor(a => Model.Item1.First().RegistrationNumber)
             </th>
 
             <th>
@@ -27,7 +58,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Item1)
         {
             <tr>
                 <td>
@@ -50,3 +81,16 @@
         }
     </tbody>
 </table>
+
+<script>
+    const manufacturersHeader = document.getElementById("manufacturers_header");
+    const manufacturersFilters = document.getElementById("manufacturers_filters");
+
+    manufacturersHeader.addEventListener("mouseenter", (event) => {
+        manufacturersFilters.style.display = "block";
+    });
+    manufacturersFilters.addEventListener("mouseleave", (event) => {
+        manufacturersFilters.style.display = "none";
+    });
+
+</script>

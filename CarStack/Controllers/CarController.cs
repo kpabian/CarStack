@@ -15,8 +15,30 @@ public sealed class CarController(
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var cars = await carService.GetAll();
-        return View(cars);
+        var manufacturers = await manufacturerService.GetAll();
+        var manufacturerIds = HttpContext.Request.Query
+            .Select(item => int.TryParse(item.Key, out var parsedId) ? parsedId : -1)
+            .Where(parsedId => parsedId != -1)
+            .ToList();
+
+        if (User.IsInRole("Admin"))
+        {
+            var cars = await carService.GetByFilter(
+                car => manufacturerIds.Count == 0 || manufacturerIds.Contains(car.ManufacturerId)
+            );
+            return View((cars, manufacturers));
+        }
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        var userCars = await carService.GetByFilter(
+            manufacturerIds.Count == 0 
+                ? car => car.UserId == userId 
+                : car => car.UserId == userId && manufacturerIds.Contains(car.ManufacturerId)
+        );
+
+        return View((userCars, manufacturers));
     }
 
     [HttpGet]
