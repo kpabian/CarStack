@@ -67,6 +67,9 @@ public class Program
 
         using var scope = app.Services.CreateScope();
 
+        var dbContext = scope.ServiceProvider.GetRequiredService<CarDBContext>();
+        await dbContext.Database.EnsureCreatedAsync();
+
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<CarStackUser>>();
         string password = "Test123!";
 
